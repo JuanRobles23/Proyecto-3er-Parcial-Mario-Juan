@@ -11,13 +11,18 @@ namespace Proyecto_3er_Parcial_Mario_Juan
     {
         static void Main()
         {
+            /* Declaración de variables: 
+               - ultimaMatriz almacenará el resultado de la última operación de matrices.
+               - nombreArchivo es el nombre del archivo donde se guardará la matriz resultante.
+               - continuar controla si el ciclo del menú sigue ejecutándose. */
             double[,] ultimaMatriz = null;
             string nombreArchivo = "matriz_resultado.txt";
             bool continuar = true;
 
+            /* Bucle principal del programa que muestra el menú y procesa las opciones del usuario. */
             while (continuar)
             {
-                Console.Clear();
+                Console.Clear();  /* Limpia la consola para una mejor presentación del menú. */
                 Console.WriteLine("Menú:");
                 Console.WriteLine("1. Sumar matrices");
                 Console.WriteLine("2. Restar matrices");
@@ -25,10 +30,11 @@ namespace Proyecto_3er_Parcial_Mario_Juan
                 Console.WriteLine("4. Mostrar última matriz resultante");
                 Console.WriteLine("5. Salir");
                 Console.Write("Seleccione una opción: ");
-                string opcion = Console.ReadLine();
+                string opcion = Console.ReadLine();  /* Lee la opción seleccionada por el usuario. */
 
                 try
                 {
+                    /* Evalúa la opción seleccionada por el usuario y ejecuta la operación correspondiente. */
                     switch (opcion)
                     {
                         case "1": // Sumar matrices
@@ -50,26 +56,28 @@ namespace Proyecto_3er_Parcial_Mario_Juan
                             }
                             else
                             {
-                                MostrarMatriz(ultimaMatriz);
+                                MostrarMatriz(ultimaMatriz);  /* Muestra la última matriz resultante. */
                             }
                             break;
 
                         case "5": // Salir
                             Console.WriteLine("¡Gracias por usar el programa!");
-                            continuar = false;
+                            continuar = false;  /* Cambia continuar a false para salir del bucle. */
                             break;
 
-                        default:
+                        default:  /* Maneja la entrada de opciones no válidas. */
                             Console.WriteLine("Opción no válida, intente nuevamente.");
                             break;
                     }
 
+                    /* Si se realizó una operación de matriz (ultimaMatriz no es null), guarda el resultado en un archivo. */
                     if (ultimaMatriz != null)
                     {
                         GuardarMatrizEnArchivo(ultimaMatriz, nombreArchivo);
                         Console.WriteLine($"La matriz resultante fue almacenada en el archivo {nombreArchivo}.");
                     }
 
+                    /* Pregunta al usuario si desea realizar otra operación antes de salir del programa. */
                     if (continuar)
                     {
                         Console.Write("¿Desea realizar otro cálculo de matrices? (s/n): ");
@@ -80,6 +88,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
                         }
                     }
                 }
+                /* Captura y maneja cualquier excepción que pueda ocurrir durante la ejecución del programa. */
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Se produjo un error: {ex.Message}");
@@ -87,6 +96,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             }
         }
 
+        /* Método para leer una matriz desde la entrada del usuario. */
         static double[,] LeerMatriz(int filas, int columnas)
         {
             double[,] matriz = new double[filas, columnas];
@@ -101,7 +111,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
                         {
                             Console.Write($"Elemento [{i + 1}][{j + 1}]: ");
                             matriz[i, j] = Convert.ToDouble(Console.ReadLine());
-                            break;
+                            break;  /* Sale del bucle una vez que se ha ingresado un valor válido. */
                         }
                         catch (FormatException)
                         {
@@ -113,6 +123,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             return matriz;
         }
 
+        /* Método para mostrar una matriz en la consola. */
         static void MostrarMatriz(double[,] matriz)
         {
             int filas = matriz.GetLength(0);
@@ -122,12 +133,13 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             {
                 for (int j = 0; j < columnas; j++)
                 {
-                    Console.Write($"{matriz[i, j],6:F2} ");
+                    Console.Write($"{matriz[i, j],6:F2} ");  /* Formato de salida con 2 decimales. */
                 }
                 Console.WriteLine();
             }
         }
 
+        /* Método para sumar dos matrices. */
         static double[,] SumarMatrices(double[,] m1, double[,] m2)
         {
             int filas = m1.GetLength(0);
@@ -143,6 +155,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             return resultado;
         }
 
+        /* Método para restar dos matrices. */
         static double[,] RestarMatrices(double[,] m1, double[,] m2)
         {
             int filas = m1.GetLength(0);
@@ -158,6 +171,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             return resultado;
         }
 
+        /* Método para multiplicar dos matrices. */
         static double[,] MultiplicarMatrices(double[,] m1, double[,] m2)
         {
             int filas1 = m1.GetLength(0);
@@ -165,6 +179,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             int filas2 = m2.GetLength(0);
             int columnas2 = m2.GetLength(1);
 
+            /* Verifica que las matrices puedan ser multiplicadas (columnas de m1 = filas de m2). */
             if (columnas1 != filas2)
                 throw new InvalidOperationException("Las matrices no se pueden multiplicar.");
 
@@ -183,6 +198,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             return resultado;
         }
 
+        /* Método para guardar una matriz en un archivo de texto. */
         static void GuardarMatrizEnArchivo(double[,] matriz, string nombreArchivo)
         {
             using (StreamWriter writer = new StreamWriter(nombreArchivo))
@@ -200,8 +216,10 @@ namespace Proyecto_3er_Parcial_Mario_Juan
             }
         }
 
+        /* Método que realiza la operación seleccionada por el usuario (suma, resta o multiplicación). */
         static double[,] RealizarOperacionMatrices(string operacion)
         {
+            /* Solicita al usuario el tamaño de las matrices. */
             Console.Write("Ingrese el número de filas de la primera matriz: ");
             int filas1 = Convert.ToInt32(Console.ReadLine());
             Console.Write("Ingrese el número de columnas de la primera matriz: ");
@@ -218,6 +236,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
 
             double[,] resultado = null;
 
+            /* Realiza la operación seleccionada, verificando que las dimensiones sean correctas. */
             if (operacion == "suma")
             {
                 if (filas1 != filas2 || columnas1 != columnas2)
@@ -234,6 +253,7 @@ namespace Proyecto_3er_Parcial_Mario_Juan
                     Console.WriteLine("Las matrices deben tener las mismas dimensiones para la resta.");
                     return null;
                 }
+                resultado = RestarMatrices(matriz1, matriz2
                 resultado = RestarMatrices(matriz1, matriz2);
             }
             else if (operacion == "multiplicación")
@@ -246,10 +266,14 @@ namespace Proyecto_3er_Parcial_Mario_Juan
                 resultado = MultiplicarMatrices(matriz1, matriz2);
             }
 
+            /* Muestra el resultado de la operación seleccionada. */
             Console.WriteLine($"Resultado de la {operacion}:");
             MostrarMatriz(resultado);
 
-            return resultado;
+            return resultado;  /* Devuelve la matriz resultante de la operación. */
         }
     }
 }
+
+
+                                           
